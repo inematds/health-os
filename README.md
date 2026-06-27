@@ -17,6 +17,7 @@ Clone it, point it at your own Supabase project and bot token, work through the 
 - **A WHOOP connection blueprint** end to end: OAuth app, the redirect/callback, the daily sync, the JSON-to-database mapping, and the two production gotchas (Cloudflare user-agent, refresh-token rotation).
 - **A recovery-led morning review** that ties yesterday's food/caffeine/training to how you recovered, and gates today's plan on the number.
 - **Photo workflows** (food -> macros, lab scan -> markers, body photo -> workout).
+- **The live dashboard** (`agent/dashboard/`): the exact dark look and feel, reading straight from Supabase.
 - **All the diagrams** generated to convey the system, embedded throughout.
 
 ---
@@ -46,7 +47,8 @@ health-os-private/
     ├── agent.yaml.example     ← bot config + slash commands
     ├── AGENTS.md
     ├── scripts/               ← state, memory, db, WHOOP, supplements, advice, ...
-    └── supabase/migrations/   ← the full schema + example seed
+    ├── supabase/migrations/   ← the full schema + example seed
+    └── dashboard/             ← the live web dashboard (page + data layer + routes)
 ```
 
 ---
