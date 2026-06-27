@@ -262,6 +262,33 @@ Each marker or SNP maps to a risk flag, a supplement, or a target in the schema.
 
 ---
 
+## Why it is built this way
+
+- **Specific beats generic.** A coach grounded in your real labs, genetics, and goals gives mechanism-aware advice; a generic bot gives platitudes. The whole design forces specificity.
+- **Memory is the product.** Everything is written to structured rows, so the coach knows your whole history and can spot patterns over weeks, not just react to the last message.
+- **Recovery is the spine of the day.** Opening each day with how you actually recovered, then tying it to what you did, teaches you your own levers.
+- **The owner's data always wins.** Any external tip is reconciled against your own numbers.
+- **Locked down by default.** Private project, service-role server-side, secrets in `~/.env`, out of git.
+- **It is not a doctor.** It is a tracking and thinking tool that sends you to real clinicians for anything clinical.
+
+---
+
+## FAQ
+
+**Is this medical advice?** No, see "Important: not medical advice" above. It is a software blueprint; verify everything with your own doctors.
+
+**Do I need a WHOOP?** No. WHOOP is the worked example, but the same OAuth + daily-sync pattern fits Oura, Garmin, Fitbit, or manual logging. The coach and dashboard work with whatever lands in the `vitals` table.
+
+**What does it cost to run?** The Supabase free tier handles one person. You pay for the LLM calls, embeddings (pennies), and Gemini vision for photos. WHOOP's API is free with a membership.
+
+**Where does my data live?** Your own private Supabase project, locked down (service-role server-side, RLS on with no policies). Nothing leaves except the LLM calls you choose to make.
+
+**Can it diagnose or change my medication?** No, and it is explicitly instructed not to. It flags clinical concerns toward a doctor and never touches medications.
+
+**How accurate are the food-photo macros?** They are vision estimates, good for trend-tracking, not a substitute for weighing food. The coach says when it is guessing, and you should still run anything that matters past a professional.
+
+---
+
 ## Important: not medical advice
 
 This repository is a **software blueprint** for building a personal health-tracking assistant. It is **not** medical, nutritional, or fitness advice, and nothing in it is a recommendation for you.
