@@ -25,6 +25,12 @@ Clone it, point it at your own Supabase project and bot token, work through the 
 
 The agent reads a compact **session snapshot** at the start of every turn (weight trend, today's intake, BP, last night's recovery, the 7-day sleep pattern, goals), so it always answers from current context. Data flows in from the wearable, food photos, and manual logs into Supabase; the coach reasons over it, grounded in your labs and genetics; and it delivers the morning review, the dashboard, cited advice, and supplement schedules.
 
+![Health OS data model](./docs/health-os-data-model.png)
+
+The recovery-led morning review the coach runs each day:
+
+![The recovery-led morning review](./docs/health-os-morning-review.png)
+
 See the full map above. The repo layout:
 
 ```
