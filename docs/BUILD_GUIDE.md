@@ -2,6 +2,8 @@
 
 End to end, how to stand up your own personal health coach. Authored to be turnkey: follow it top to bottom and you will have a working coach with a live WHOOP connection. No personal data anywhere; fill in your own as you go.
 
+> ⚠️ **Not medical advice.** This is a software blueprint, not health guidance. Everything here is simply what worked for one person who consulted their doctors at every step. It is not a prescription, diagnosis, or recommendation for you. Talk to qualified clinicians before changing anything about your labs, supplements, training, or diet. The AI coach can be wrong or hallucinate, so treat anything it suggests as a question to bring to your doctor, never an instruction to follow.
+
 ---
 
 ## 0. The design in one paragraph

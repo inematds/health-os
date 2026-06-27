@@ -4,6 +4,8 @@ A complete, turnkey blueprint for a **personal AI health coach**: a Telegram age
 
 Clone it, point it at your own Supabase project and bot token, work through the checklist below, and you have a coach that reviews yesterday, reads last night's recovery, and tells you whether to push or pull today.
 
+> ⚠️ **Not medical advice.** This is a software blueprint, not health guidance. Everything here is simply what worked for one person who consulted their doctors at every step. It is not a prescription, diagnosis, or recommendation for you. Talk to qualified clinicians before changing anything about your labs, supplements, training, or diet. The AI coach can be wrong or hallucinate, so treat anything it suggests as a question to bring to your doctor, never an instruction to follow.
+
 ![Health OS system map](./docs/health-os-schematic.png)
 
 > Everything in this repo is generic or an example. It contains **no personal health information**. Bring your own data, bot, and Supabase project. Keep your filled-in `CLAUDE.md`, your seed values, and your `~/.env` out of version control.
@@ -224,6 +226,17 @@ The coach is most useful grounded in a comprehensive baseline. This is the full 
 - [ ] TAS2R38 (taste / bitter sensitivity)
 
 Each marker or SNP maps to a risk flag, a supplement, or a target in the schema. That is how the coach gives mechanism-aware advice instead of generic tips.
+
+---
+
+## Important: not medical advice
+
+This repository is a **software blueprint** for building a personal health-tracking assistant. It is **not** medical, nutritional, or fitness advice, and nothing in it is a recommendation for you.
+
+- **It is one person's experience.** Every target, marker, supplement, and habit referenced here is an example of what worked for the author, who worked with qualified doctors at every step. Your physiology, labs, and risks are different.
+- **Consult professionals, always.** Before acting on any value, panel, supplement, or plan, talk to your physician and the relevant specialists, and get your own labs interpreted by your own clinicians, every step of the way.
+- **AI can hallucinate.** The coach is a large language model. It can be confidently wrong, miss context, or invent specifics. Treat every recommendation it produces as a prompt to verify with a doctor, not direction to follow. Run the AI's suggestions past real clinicians, exactly as the author did.
+- **You own your health decisions.** The authors and contributors accept no liability for how you use this.
 
 ---
 
