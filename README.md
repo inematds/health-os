@@ -300,6 +300,33 @@ This repository is a **software blueprint** for building a personal health-track
 
 ---
 
+## Prerequisites
+
+- **Python 3.9+** — the scripts are stdlib-only except `advice.py` (`pip install requests`).
+- **ffmpeg** — only for `exercise_clip.py` (workout demo clips).
+- **Supabase CLI** — to push the migrations.
+- **Node** — to run the agent + the dashboard server.
+- **API keys** (see [`agent/.env.example`](agent/.env.example)): Telegram bot, Supabase, OpenAI (embeddings), Google/Gemini (vision). Optional: WHOOP, Apify (`find-restaurants.sh`), a video API (`exercise_clip.py`).
+
+Copy `agent/.env.example` to `~/.env` and fill it in. Never commit your real `~/.env`.
+
+---
+
+## Operations
+
+**Storage bucket** — one command creates the private photo bucket:
+```bash
+python3 agent/scripts/db.py mkbucket health-assets
+```
+
+**Scheduling**
+- WHOOP sync is deterministic; schedule `agent/scripts/whoop-sync.py` a few times each morning. Use [`agent/setup/whoop-sync.plist.example`](agent/setup/whoop-sync.plist.example) (macOS launchd) or [`agent/setup/crontab.example`](agent/setup/crontab.example) (Linux). The 7/10/13 schedule catches recovery whenever WHOOP scores the night; repeats are idempotent.
+- The morning check-in triggers the agent (an LLM turn), so fire the `/checkin` prompt each morning via your platform's scheduler (ClaudeClaw has one built in).
+
+**The `/healthdb` link** — the command sends a deep-link button to the dashboard, `https://<your-host>/healthdb?token=<DASHBOARD_TOKEN>`. The token is stashed in an HttpOnly cookie on first load, then dropped from the URL (see [`agent/dashboard/routes.example.ts`](agent/dashboard/routes.example.ts)).
+
+---
+
 ## Privacy
 
 This is sensitive data. The Supabase project is private and locked down (service-role server-side, no anon policies). Keep your real `CLAUDE.md`, seed values, photos, and `~/.env` out of git. This repo is the scrubbed blueprint, not anyone's records.
