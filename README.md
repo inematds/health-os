@@ -133,58 +133,95 @@ Work top to bottom. Check each box once you have personally verified it on your 
 
 ## The panel this system is built around
 
-The coach is most useful grounded in a comprehensive baseline. This is the full set of **blood markers** and **DNA SNPs** the design tracks, the same panel the schema, the risk flags, and the goals are modeled on. Use it as a "what to get tested" checklist. Names only here, no values or genotypes; your own results live in your private `lab_results` rows and your filled-in `CLAUDE.md`.
+The coach is most useful grounded in a comprehensive baseline. This is the full set of **blood markers** and **DNA SNPs** the design tracks, the same panel the schema, the risk flags, and the goals are modeled on. One checkbox per test so you can tick them off as you order them. Names only, no values or genotypes; your own results live in your private `lab_results` rows and your filled-in `CLAUDE.md`.
 
 ### Blood markers
-**Cardiometabolic** &nbsp;
-- [ ] LDL-C, ApoB, ApoA-1, Lp(a)
-- [ ] hs-CRP (inflammation)
+
+**Cardiometabolic**
+- [ ] LDL-C
+- [ ] ApoB
+- [ ] ApoA-1
+- [ ] Lp(a)
+- [ ] hs-CRP
 - [ ] HOMA-IR (fasting glucose + insulin)
 
 **Hormones**
-- [ ] Testosterone (total + free), SHBG
-- [ ] Estradiol, DHEA-S, pregnenolone
+- [ ] Testosterone, total
+- [ ] Testosterone, free
+- [ ] SHBG
+- [ ] Estradiol
+- [ ] DHEA-S
+- [ ] Pregnenolone
 - [ ] Cortisol (AM)
 
 **Thyroid**
-- [ ] Reverse T3 (with TSH, free T3, free T4)
+- [ ] Reverse T3
+- [ ] Thyroid panel (TSH, free T3, free T4)
 
 **Liver**
-- [ ] ALT, AST
+- [ ] ALT
+- [ ] AST
 
 **Methylation**
 - [ ] Homocysteine
 
 **Vitamins + minerals**
 - [ ] Vitamin D (25-OH)
-- [ ] Magnesium, Zinc, Copper, Selenium
+- [ ] Magnesium
+- [ ] Zinc
+- [ ] Copper
+- [ ] Selenium
 
-_(plus the standard CBC, metabolic, and full lipid panels as a foundation.)_
+**Foundation**
+- [ ] Full lipid panel
+- [ ] Complete blood count (CBC)
+- [ ] Comprehensive metabolic panel
 
 ### DNA SNPs
+
 **Lipids + cardiovascular**
-- [ ] APOE, LPA, PCSK9, CETP, ACE, AGT, NOS3 (eNOS)
+- [ ] APOE
+- [ ] LPA
+- [ ] PCSK9
+- [ ] CETP
+- [ ] ACE
+- [ ] AGT
+- [ ] NOS3 (eNOS)
 
 **Methylation / B-vitamins**
-- [ ] MTHFR, MTHFD1, MTR, MTRR, CBS
+- [ ] MTHFR
+- [ ] MTHFD1
+- [ ] MTR
+- [ ] MTRR
+- [ ] CBS
 
 **Detox (Phase II)**
-- [ ] GSTM1, GSTT1, GSTP1
+- [ ] GSTM1
+- [ ] GSTT1
+- [ ] GSTP1
 
 **Caffeine + neurotransmitters**
-- [ ] COMT, CYP1A2
+- [ ] COMT
+- [ ] CYP1A2
 
 **Vitamin D**
-- [ ] VDR, CYP2R1, GC
+- [ ] VDR
+- [ ] CYP2R1
+- [ ] GC
 
 **Metabolic / body weight**
-- [ ] FTO, PPARG, TCF7L2
+- [ ] FTO
+- [ ] PPARG
+- [ ] TCF7L2
 
 **Inflammation / antioxidant**
-- [ ] TNF, SOD2, GPX1
+- [ ] TNF
+- [ ] SOD2
+- [ ] GPX1
 
 **Other**
-- [ ] HFE (iron handling), TAS2R38 (taste)
+- [ ] HFE (iron handling)
+- [ ] TAS2R38 (taste / bitter sensitivity)
 
 Each marker or SNP maps to a risk flag, a supplement, or a target in the schema. That is how the coach gives mechanism-aware advice instead of generic tips.
 
