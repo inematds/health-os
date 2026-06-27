@@ -1,0 +1,8 @@
+# Never commit secrets or your filled-in personal data
+.env
+*.env
+**/CLAUDE.local.md
+agent/CLAUDE.md.filled
+store/
+*.log
+.DS_Store
