@@ -131,6 +131,65 @@ Work top to bottom. Check each box once you have personally verified it on your 
 
 ---
 
+## The panel this system is built around
+
+The coach is most useful grounded in a comprehensive baseline. This is the full set of **blood markers** and **DNA SNPs** the design tracks, the same panel the schema, the risk flags, and the goals are modeled on. Use it as a "what to get tested" checklist. Names only here, no values or genotypes; your own results live in your private `lab_results` rows and your filled-in `CLAUDE.md`.
+
+### Blood markers
+**Cardiometabolic** &nbsp;
+- [ ] LDL-C, ApoB, ApoA-1, Lp(a)
+- [ ] hs-CRP (inflammation)
+- [ ] HOMA-IR (fasting glucose + insulin)
+
+**Hormones**
+- [ ] Testosterone (total + free), SHBG
+- [ ] Estradiol, DHEA-S, pregnenolone
+- [ ] Cortisol (AM)
+
+**Thyroid**
+- [ ] Reverse T3 (with TSH, free T3, free T4)
+
+**Liver**
+- [ ] ALT, AST
+
+**Methylation**
+- [ ] Homocysteine
+
+**Vitamins + minerals**
+- [ ] Vitamin D (25-OH)
+- [ ] Magnesium, Zinc, Copper, Selenium
+
+_(plus the standard CBC, metabolic, and full lipid panels as a foundation.)_
+
+### DNA SNPs
+**Lipids + cardiovascular**
+- [ ] APOE, LPA, PCSK9, CETP, ACE, AGT, NOS3 (eNOS)
+
+**Methylation / B-vitamins**
+- [ ] MTHFR, MTHFD1, MTR, MTRR, CBS
+
+**Detox (Phase II)**
+- [ ] GSTM1, GSTT1, GSTP1
+
+**Caffeine + neurotransmitters**
+- [ ] COMT, CYP1A2
+
+**Vitamin D**
+- [ ] VDR, CYP2R1, GC
+
+**Metabolic / body weight**
+- [ ] FTO, PPARG, TCF7L2
+
+**Inflammation / antioxidant**
+- [ ] TNF, SOD2, GPX1
+
+**Other**
+- [ ] HFE (iron handling), TAS2R38 (taste)
+
+Each marker or SNP maps to a risk flag, a supplement, or a target in the schema. That is how the coach gives mechanism-aware advice instead of generic tips.
+
+---
+
 ## Privacy
 
 This is sensitive data. The Supabase project is private and locked down (service-role server-side, no anon policies). Keep your real `CLAUDE.md`, seed values, photos, and `~/.env` out of git. This repo is the scrubbed blueprint, not anyone's records.
