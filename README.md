@@ -22,6 +22,20 @@ Clone it, point it at your own Supabase project and bot token, work through the 
 - **The live dashboard** (`agent/dashboard/`): the exact dark look and feel, reading straight from Supabase.
 - **All the diagrams** generated to convey the system, embedded throughout.
 
+## A day in the life
+
+A typical day, all in Telegram. Illustrative example, not real numbers, and not advice.
+
+- **07:00** the morning check-in fires: "Recovery 71% (green), slept 7h20m, HRV 64, RHR 52. Yesterday's protein hit target and caffeine was early and modest, that clean run is why you're green. Today is a push day, put carbs around the session. Weight this morning? Any BP?"
+- **08:30** you photograph breakfast: "~38g protein, low saturated fat, logged." (writes a `food_log` row)
+- **13:00** you ask "coffee now?": "You're green and it's early, fine, keep it under your ceiling and cut off by mid-afternoon."
+- **19:00** "steak and a glass of wine": logged; the coach notes the alcohol may dent tonight's recovery.
+- **Next morning** the loop closes: "Recovery dipped to 48% amber, the wine and late meal are the likely cause. Ease off today, lean on protein, fiber, and hydration."
+
+Every number above is illustrative. Your coach's outputs are only as good as the profile you give it, and should always be checked with your doctor.
+
+---
+
 ---
 
 ## Architecture
@@ -64,6 +78,25 @@ health-os-private/
 ![WHOOP data path](./docs/whoop-2-data.png)
 
 Full walkthrough in [`docs/BUILD_GUIDE.md`](./docs/BUILD_GUIDE.md). The short version: create a WHOOP app, register `https://<your-host>/whoop/callback`, enable `read:recovery read:sleep read:cycles offline`, authorize once, and a daily cron (`agent/scripts/whoop-sync.py`) pulls recovery + sleep into the `vitals` table. It rotates the refresh token every run and sends a browser user-agent (Cloudflare bans the default Python one).
+
+---
+
+## Environment variables
+
+Every secret lives in `~/.env` (your home directory, never a project `.env`, never committed):
+
+| Variable | Purpose |
+|---|---|
+| `HEALTH_BOT_TOKEN` | Telegram bot token (from @BotFather) |
+| `SUPABASE_URL` | `https://<project-ref>.supabase.co` |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-side DB access (bypasses RLS) |
+| `SUPABASE_ANON_KEY` | Public key (RLS means it reads nothing) |
+| `SUPABASE_DB_PASSWORD` | For `supabase` CLI migrations |
+| `OPENAI_API_KEY` | Embeddings for semantic memory |
+| `GOOGLE_API_KEY` | Vision for food/lab photos + workout clips (Gemini) |
+| `DASHBOARD_TOKEN` | Gates the web dashboard |
+| `WHOOP_CLIENT_ID`, `WHOOP_CLIENT_SECRET` | Your WHOOP app credentials |
+| `WHOOP_REFRESH_TOKEN` | Written by the OAuth callback, rotated every sync |
 
 ---
 
