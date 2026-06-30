@@ -1,220 +1,222 @@
 # Health OS
 
-A complete, turnkey blueprint for a **personal AI health coach**: a Telegram agent that remembers everything in its own Supabase database, reads your wearable (WHOOP) over the official API, runs a recovery-led morning review, and grounds every call in your real bloods, genetics, body composition, and goals.
+> 🌐 [English](./README.en.md) · **Português**
 
-Clone it, point it at your own Supabase project and bot token, work through the checklist below, and you have a coach that reviews yesterday, reads last night's recovery, and tells you whether to push or pull today.
+Um blueprint completo e pronto para uso de um **coach de saúde pessoal com IA**: um agente no Telegram que lembra de tudo no seu próprio banco de dados Supabase, lê seu wearable (WHOOP) pela API oficial, faz uma revisão matinal guiada pela recuperação e fundamenta cada resposta nos seus exames de sangue, genética, composição corporal e metas reais.
 
-> ⚠️ **Not medical advice.** This is a software blueprint, not health guidance. Everything here is simply what worked for one person who consulted their doctors at every step. It is not a prescription, diagnosis, or recommendation for you. Talk to qualified clinicians before changing anything about your labs, supplements, training, or diet. The AI coach can be wrong or hallucinate, so treat anything it suggests as a question to bring to your doctor, never an instruction to follow.
+Clone, aponte para o seu próprio projeto Supabase e token de bot, percorra o checklist abaixo e você terá um coach que revisa o dia anterior, lê a recuperação da última noite e te diz se hoje é dia de avançar ou recuar.
 
-![Health OS system map](./docs/health-os-schematic.png)
+> ⚠️ **Não é aconselhamento médico.** Isto é um blueprint de software, não orientação de saúde. Tudo aqui é simplesmente o que funcionou para uma pessoa que consultou seus médicos a cada passo. Não é uma prescrição, diagnóstico ou recomendação para você. Converse com profissionais de saúde qualificados antes de mudar qualquer coisa nos seus exames, suplementos, treino ou dieta. O coach de IA pode errar ou alucinar, então trate qualquer coisa que ele sugerir como uma pergunta para levar ao seu médico, nunca como uma instrução a seguir.
 
-> Everything in this repo is generic or an example. It contains **no personal health information**. Bring your own data, bot, and Supabase project. Keep your filled-in `CLAUDE.md`, your seed values, and your `~/.env` out of version control.
+![Mapa do sistema Health OS](./docs/health-os-schematic.png)
 
----
-
-## What you get
-
-- **A Telegram health coach** grounded in your data, not generic advice.
-- **Its own Supabase database** (full schema in `agent/supabase/migrations/`): food, workouts, weigh-ins, body comp, caffeine, supplements, vitals, labs, daily check-ins, goals, context, plus semantic message memory.
-- **A WHOOP connection blueprint** end to end: OAuth app, the redirect/callback, the daily sync, the JSON-to-database mapping, and the two production gotchas (Cloudflare user-agent, refresh-token rotation).
-- **A recovery-led morning review** that ties yesterday's food/caffeine/training to how you recovered, and gates today's plan on the number.
-- **Photo workflows** (food -> macros, lab scan -> markers, body photo -> workout).
-- **The live dashboard** (`agent/dashboard/`): the exact dark look and feel, reading straight from Supabase.
-- **All the diagrams** generated to convey the system, embedded throughout.
-
-## A day in the life
-
-A typical day, all in Telegram. Illustrative example, not real numbers, and not advice.
-
-- **07:00** the morning check-in fires: "Recovery 71% (green), slept 7h20m, HRV 64, RHR 52. Yesterday's protein hit target and caffeine was early and modest, that clean run is why you're green. Today is a push day, put carbs around the session. Weight this morning? Any BP?"
-- **08:30** you photograph breakfast: "~38g protein, low saturated fat, logged." (writes a `food_log` row)
-- **13:00** you ask "coffee now?": "You're green and it's early, fine, keep it under your ceiling and cut off by mid-afternoon."
-- **19:00** "steak and a glass of wine": logged; the coach notes the alcohol may dent tonight's recovery.
-- **Next morning** the loop closes: "Recovery dipped to 48% amber, the wine and late meal are the likely cause. Ease off today, lean on protein, fiber, and hydration."
-
-Every number above is illustrative. Your coach's outputs are only as good as the profile you give it, and should always be checked with your doctor.
+> Tudo neste repositório é genérico ou um exemplo. Não contém **nenhuma informação pessoal de saúde**. Traga seus próprios dados, bot e projeto Supabase. Mantenha o seu `CLAUDE.md` preenchido, seus valores de seed e seu `~/.env` fora do controle de versão.
 
 ---
 
+## O que você recebe
+
+- **Um coach de saúde no Telegram** fundamentado nos seus dados, não em conselhos genéricos.
+- **Seu próprio banco de dados Supabase** (schema completo em `agent/supabase/migrations/`): alimentação, treinos, pesagens, composição corporal, cafeína, suplementos, sinais vitais, exames, check-ins diários, metas, contexto, além de memória semântica das mensagens.
+- **Um blueprint de conexão com o WHOOP** de ponta a ponta: app OAuth, o redirect/callback, o sync diário, o mapeamento JSON-para-banco e os dois detalhes de produção que pegam todo mundo (user-agent do Cloudflare, rotação do refresh token).
+- **Uma revisão matinal guiada pela recuperação** que liga a comida/cafeína/treino de ontem a como você recuperou, e condiciona o plano de hoje a esse número.
+- **Fluxos com foto** (comida -> macros, exame escaneado -> marcadores, foto do corpo -> treino).
+- **O dashboard ao vivo** (`agent/dashboard/`): exatamente o visual dark, lendo direto do Supabase.
+- **Todos os diagramas** gerados para explicar o sistema, embutidos ao longo do texto.
+
+## Um dia na vida
+
+Um dia típico, todo no Telegram. Exemplo ilustrativo, não são números reais, e não é aconselhamento.
+
+- **07:00** dispara o check-in matinal: "Recuperação 71% (verde), dormiu 7h20m, HRV 64, FC de repouso 52. A proteína de ontem bateu a meta e a cafeína foi cedo e moderada, essa rodada limpa é o motivo de você estar verde. Hoje é dia de avançar, coloque os carboidratos em torno do treino. Peso desta manhã? Alguma PA?"
+- **08:30** você fotografa o café da manhã: "~38g de proteína, baixa gordura saturada, registrado." (grava uma linha em `food_log`)
+- **13:00** você pergunta "café agora?": "Você está verde e ainda é cedo, tudo bem, mantenha abaixo do seu teto e corte no meio da tarde."
+- **19:00** "bife e uma taça de vinho": registrado; o coach observa que o álcool pode prejudicar a recuperação desta noite.
+- **Na manhã seguinte** o ciclo se fecha: "Recuperação caiu para 48% âmbar, o vinho e a refeição tardia são a causa provável. Pegue leve hoje, aposte em proteína, fibra e hidratação."
+
+Cada número acima é ilustrativo. As respostas do seu coach são tão boas quanto o perfil que você dá a ele, e devem sempre ser verificadas com o seu médico.
+
 ---
 
-## Architecture
+---
 
-The agent reads a compact **session snapshot** at the start of every turn (weight trend, today's intake, BP, last night's recovery, the 7-day sleep pattern, goals), so it always answers from current context. Data flows in from the wearable, food photos, and manual logs into Supabase; the coach reasons over it, grounded in your labs and genetics; and it delivers the morning review, the dashboard, cited advice, and supplement schedules.
+## Arquitetura
 
-![Health OS data model](./docs/health-os-data-model.png)
+O agente lê um **snapshot da sessão** compacto no início de cada turno (tendência de peso, ingestão de hoje, PA, recuperação da última noite, o padrão de sono dos 7 dias, metas), então sempre responde a partir do contexto atual. Os dados entram a partir do wearable, das fotos de comida e dos registros manuais para o Supabase; o coach raciocina sobre eles, fundamentado nos seus exames e genética; e entrega a revisão matinal, o dashboard, conselhos com fonte citada e cronogramas de suplementos.
 
-The recovery-led morning review the coach runs each day:
+![Modelo de dados do Health OS](./docs/health-os-data-model.png)
 
-![The recovery-led morning review](./docs/health-os-morning-review.png)
+A revisão matinal guiada pela recuperação que o coach executa todo dia:
 
-See the full map above. The repo layout:
+![A revisão matinal guiada pela recuperação](./docs/health-os-morning-review.png)
+
+Veja o mapa completo acima. A estrutura do repositório:
 
 ```
 health-os-private/
-├── README.md                  ← you are here (overview + the test checklist)
+├── README.md                  ← você está aqui (visão geral + o checklist de testes)
 ├── docs/
-│   ├── BUILD_GUIDE.md         ← step-by-step build, end to end
+│   ├── BUILD_GUIDE.md         ← build passo a passo, de ponta a ponta
 │   ├── health-os-schematic.png
 │   ├── whoop-1-setup.png
 │   └── whoop-2-data.png
-└── agent/                     ← the self-contained, sanitized agent
-    ├── CLAUDE.md              ← the coach's brain (template, fill in your profile)
-    ├── agent.yaml.example     ← bot config + slash commands
+└── agent/                     ← o agente autocontido e higienizado
+    ├── CLAUDE.md              ← o cérebro do coach (template, preencha seu perfil)
+    ├── agent.yaml.example     ← config do bot + slash commands
     ├── AGENTS.md
-    ├── scripts/               ← state, memory, db, WHOOP, supplements, advice, ...
-    ├── supabase/migrations/   ← the full schema + example seed
-    └── dashboard/             ← the live web dashboard (page + data layer + routes)
+    ├── scripts/               ← estado, memória, db, WHOOP, suplementos, conselhos, ...
+    ├── supabase/migrations/   ← o schema completo + seed de exemplo
+    └── dashboard/             ← o dashboard web ao vivo (página + camada de dados + rotas)
 ```
 
 ---
 
-## The WHOOP connection (the headline blueprint)
+## A conexão com o WHOOP (o blueprint principal)
 
-### One-time setup
-![WHOOP setup flow](./docs/whoop-1-setup.png)
+### Configuração única
+![Fluxo de configuração do WHOOP](./docs/whoop-1-setup.png)
 
-### Data path: API JSON to coach
-![WHOOP data path](./docs/whoop-2-data.png)
+### Caminho dos dados: JSON da API até o coach
+![Caminho dos dados do WHOOP](./docs/whoop-2-data.png)
 
-Full walkthrough in [`docs/BUILD_GUIDE.md`](./docs/BUILD_GUIDE.md). The short version: create a WHOOP app, register `https://<your-host>/whoop/callback`, enable `read:recovery read:sleep read:cycles offline`, authorize once, and a daily cron (`agent/scripts/whoop-sync.py`) pulls recovery + sleep into the `vitals` table. It rotates the refresh token every run and sends a browser user-agent (Cloudflare bans the default Python one).
+Walkthrough completo em [`docs/BUILD_GUIDE.md`](./docs/BUILD_GUIDE.md). A versão curta: crie um app WHOOP, registre `https://<seu-host>/whoop/callback`, habilite `read:recovery read:sleep read:cycles offline`, autorize uma vez, e um cron diário (`agent/scripts/whoop-sync.py`) puxa recuperação + sono para a tabela `vitals`. Ele rotaciona o refresh token a cada execução e envia um user-agent de navegador (o Cloudflare bane o padrão do Python).
 
 ---
 
-## Environment variables
+## Variáveis de ambiente
 
-Every secret lives in `~/.env` (your home directory, never a project `.env`, never committed):
+Todo segredo vive em `~/.env` (seu diretório home, nunca um `.env` de projeto, nunca commitado):
 
-| Variable | Purpose |
+| Variável | Finalidade |
 |---|---|
-| `HEALTH_BOT_TOKEN` | Telegram bot token (from @BotFather) |
+| `HEALTH_BOT_TOKEN` | Token do bot do Telegram (do @BotFather) |
 | `SUPABASE_URL` | `https://<project-ref>.supabase.co` |
-| `SUPABASE_SERVICE_ROLE_KEY` | Server-side DB access (bypasses RLS) |
-| `SUPABASE_ANON_KEY` | Public key (RLS means it reads nothing) |
-| `SUPABASE_DB_PASSWORD` | For `supabase` CLI migrations |
-| `OPENAI_API_KEY` | Embeddings for semantic memory |
-| `GOOGLE_API_KEY` | Vision for food/lab photos + workout clips (Gemini) |
-| `DASHBOARD_TOKEN` | Gates the web dashboard |
-| `WHOOP_CLIENT_ID`, `WHOOP_CLIENT_SECRET` | Your WHOOP app credentials |
-| `WHOOP_REFRESH_TOKEN` | Written by the OAuth callback, rotated every sync |
+| `SUPABASE_SERVICE_ROLE_KEY` | Acesso ao DB no lado do servidor (ignora o RLS) |
+| `SUPABASE_ANON_KEY` | Chave pública (com RLS, não lê nada) |
+| `SUPABASE_DB_PASSWORD` | Para as migrations do CLI `supabase` |
+| `OPENAI_API_KEY` | Embeddings para a memória semântica |
+| `GOOGLE_API_KEY` | Visão para fotos de comida/exames + clipes de treino (Gemini) |
+| `DASHBOARD_TOKEN` | Protege o dashboard web |
+| `WHOOP_CLIENT_ID`, `WHOOP_CLIENT_SECRET` | Credenciais do seu app WHOOP |
+| `WHOOP_REFRESH_TOKEN` | Escrito pelo callback OAuth, rotacionado a cada sync |
 
 ---
 
-## Quick start
+## Início rápido
 
-1. Provision a private Supabase project; push `agent/supabase/migrations/`.
-2. Create a private `health-assets` storage bucket.
-3. Fill `~/.env` (Supabase keys, `OPENAI_API_KEY`, `GOOGLE_API_KEY`, your `HEALTH_BOT_TOKEN`, and `WHOOP_CLIENT_ID/SECRET`).
-4. Create a Telegram bot via @BotFather; set `telegram_bot_token_env` in `agent.yaml`.
-5. Copy `CLAUDE.md` and fill in your own profile.
-6. Connect WHOOP (one-time OAuth). Schedule the sync + the morning check-in.
+1. Provisione um projeto Supabase privado; faça o push de `agent/supabase/migrations/`.
+2. Crie um bucket de storage privado `health-assets`.
+3. Preencha `~/.env` (chaves do Supabase, `OPENAI_API_KEY`, `GOOGLE_API_KEY`, seu `HEALTH_BOT_TOKEN` e `WHOOP_CLIENT_ID/SECRET`).
+4. Crie um bot do Telegram via @BotFather; defina `telegram_bot_token_env` em `agent.yaml`.
+5. Copie `CLAUDE.md` e preencha com o seu próprio perfil.
+6. Conecte o WHOOP (OAuth único). Agende o sync + o check-in matinal.
 
-Full detail: [`docs/BUILD_GUIDE.md`](./docs/BUILD_GUIDE.md).
+Detalhes completos: [`docs/BUILD_GUIDE.md`](./docs/BUILD_GUIDE.md).
 
 ---
 
-## Validation checklist
+## Checklist de validação
 
-Work top to bottom. Check each box once you have personally verified it on your own setup.
+Trabalhe de cima para baixo. Marque cada caixa assim que verificar pessoalmente no seu próprio setup.
 
 ### Supabase + schema
-- [ ] Private Supabase project provisioned in an appropriate region
-- [ ] `pgvector` extension enabled (the `0001_init.sql` migration does this)
-- [ ] All migrations pushed; all 14 tables exist
-- [ ] RLS enabled on every table, no policies (anon key reads nothing)
-- [ ] Private `health-assets` storage bucket created
-- [ ] Example seed replaced with your own goals + context (`0002_seed_example.sql`)
-- [ ] `scripts/db.py select goals` returns your rows
+- [ ] Projeto Supabase privado provisionado em uma região apropriada
+- [ ] Extensão `pgvector` habilitada (a migration `0001_init.sql` faz isso)
+- [ ] Todas as migrations aplicadas; todas as 14 tabelas existem
+- [ ] RLS habilitado em todas as tabelas, sem policies (a chave anon não lê nada)
+- [ ] Bucket de storage privado `health-assets` criado
+- [ ] Seed de exemplo substituído pelas suas próprias metas + contexto (`0002_seed_example.sql`)
+- [ ] `scripts/db.py select goals` retorna as suas linhas
 
-### Agent + Telegram
-- [ ] Bot created via @BotFather, token in `~/.env`
-- [ ] Agent boots and responds to a plain message in Telegram
-- [ ] Slash commands appear in the "/" menu (`/checkin`, `/today`, `/sofar`, `/newday`, `/supplements`, `/advice`)
-- [ ] `CLAUDE.md` filled in with your real profile (goal, bloods, genetics, constraints)
-- [ ] `state.py` snapshot prints your weight, intake, and goals
+### Agente + Telegram
+- [ ] Bot criado via @BotFather, token em `~/.env`
+- [ ] O agente sobe e responde a uma mensagem comum no Telegram
+- [ ] Slash commands aparecem no menu "/" (`/checkin`, `/today`, `/sofar`, `/newday`, `/supplements`, `/advice`)
+- [ ] `CLAUDE.md` preenchido com o seu perfil real (meta, exames de sangue, genética, restrições)
+- [ ] O snapshot do `state.py` imprime seu peso, ingestão e metas
 
-### Logging
-- [ ] A food photo is read and written to `food_log` with macros + flags
-- [ ] A weight message writes a `weigh_ins` row
-- [ ] A workout / caffeine / supplement message writes its row
-- [ ] A BP reading writes a `vitals` row
-- [ ] A lab scan extracts markers into `lab_results`
-- [ ] Semantic recall (`mem.py recall`) returns relevant past messages
+### Registro (logging)
+- [ ] Uma foto de comida é lida e gravada em `food_log` com macros + flags
+- [ ] Uma mensagem de peso grava uma linha em `weigh_ins`
+- [ ] Uma mensagem de treino / cafeína / suplemento grava a sua linha
+- [ ] Uma leitura de PA grava uma linha em `vitals`
+- [ ] Um escaneamento de exame extrai marcadores para `lab_results`
+- [ ] A recuperação semântica (`mem.py recall`) retorna mensagens passadas relevantes
 
 ### WHOOP
-- [ ] WHOOP developer app created; scopes enabled
-- [ ] Redirect URI registered exactly and saved
-- [ ] One-time OAuth completed; `WHOOP_REFRESH_TOKEN` written to `~/.env`
-- [ ] `whoop-sync.py` runs and writes `recovery_pct`, `hrv_ms`, `resting_hr`, `sleep_hours`
-- [ ] Re-running the sync is idempotent (no duplicate rows for a day)
-- [ ] The cron is scheduled and fires in the morning
-- [ ] Token rotation verified (a second run still succeeds, no `invalid_grant`)
-- [ ] Browser user-agent confirmed (no Cloudflare 1010 error)
+- [ ] App de desenvolvedor WHOOP criado; escopos habilitados
+- [ ] URI de redirect registrada exatamente e salva
+- [ ] OAuth único concluído; `WHOOP_REFRESH_TOKEN` escrito em `~/.env`
+- [ ] `whoop-sync.py` roda e grava `recovery_pct`, `hrv_ms`, `resting_hr`, `sleep_hours`
+- [ ] Rodar o sync de novo é idempotente (sem linhas duplicadas para um dia)
+- [ ] O cron está agendado e dispara de manhã
+- [ ] Rotação do token verificada (uma segunda execução ainda funciona, sem `invalid_grant`)
+- [ ] User-agent de navegador confirmado (sem erro 1010 do Cloudflare)
 
-### Coaching behavior
-- [ ] Morning check-in fires and opens with last night's recovery
-- [ ] The check-in ties yesterday's choices to the recovery number
-- [ ] Today's plan is visibly gated on recovery (green = push, red = ease off)
-- [ ] On-demand "should I eat this given how I slept" pulls recovery and leads with it
-- [ ] `coach_summary` records the recovery + its cause (history accrues)
-- [ ] The 7-day sleep/recovery trend shows in the snapshot
+### Comportamento de coaching
+- [ ] O check-in matinal dispara e abre com a recuperação da última noite
+- [ ] O check-in liga as escolhas de ontem ao número da recuperação
+- [ ] O plano de hoje é visivelmente condicionado à recuperação (verde = avançar, vermelho = pegar leve)
+- [ ] Um "devo comer isso dado como dormi" sob demanda puxa a recuperação e lidera com ela
+- [ ] `coach_summary` registra a recuperação + a sua causa (o histórico se acumula)
+- [ ] A tendência de sono/recuperação dos 7 dias aparece no snapshot
 
-### Optional
-- [ ] Live trends dashboard reachable and showing the Sleep & Recovery card
-- [ ] Workout demo clip generation works (`exercise_clip.py`)
-- [ ] Influencer advice RAG returns cited tips reconciled to your data
+### Opcional
+- [ ] Dashboard de tendências ao vivo acessível e mostrando o card de Sono & Recuperação
+- [ ] Geração do clipe de demonstração de treino funciona (`exercise_clip.py`)
+- [ ] O RAG de conselhos de influenciadores retorna dicas com fonte citada, reconciliadas com os seus dados
 
 ---
 
-## The panel this system is built around
+## O painel em torno do qual este sistema é construído
 
-The coach is most useful grounded in a comprehensive baseline. This is the full set of **blood markers** and **DNA SNPs** the design tracks, the same panel the schema, the risk flags, and the goals are modeled on. One checkbox per test so you can tick them off as you order them. Names only, no values or genotypes; your own results live in your private `lab_results` rows and your filled-in `CLAUDE.md`.
+O coach é mais útil quando fundamentado em uma linha de base abrangente. Este é o conjunto completo de **marcadores de sangue** e **SNPs de DNA** que o design acompanha, o mesmo painel sobre o qual o schema, as risk flags e as metas são modelados. Uma caixa por exame, para você ir marcando conforme os solicita. Apenas os nomes, sem valores ou genótipos; os seus próprios resultados vivem nas suas linhas privadas de `lab_results` e no seu `CLAUDE.md` preenchido.
 
-### Blood markers
+### Marcadores de sangue
 
-**Cardiometabolic**
+**Cardiometabólicos**
 - [ ] LDL-C
 - [ ] ApoB
 - [ ] ApoA-1
 - [ ] Lp(a)
 - [ ] hs-CRP
-- [ ] HOMA-IR (fasting glucose + insulin)
+- [ ] HOMA-IR (glicose de jejum + insulina)
 
-**Hormones**
-- [ ] Testosterone, total
-- [ ] Testosterone, free
+**Hormônios**
+- [ ] Testosterona, total
+- [ ] Testosterona, livre
 - [ ] SHBG
 - [ ] Estradiol
 - [ ] DHEA-S
-- [ ] Pregnenolone
-- [ ] Cortisol (AM)
+- [ ] Pregnenolona
+- [ ] Cortisol (manhã)
 
-**Thyroid**
-- [ ] Reverse T3
-- [ ] Thyroid panel (TSH, free T3, free T4)
+**Tireoide**
+- [ ] T3 reverso
+- [ ] Painel tireoidiano (TSH, T3 livre, T4 livre)
 
-**Liver**
+**Fígado**
 - [ ] ALT
 - [ ] AST
 
-**Methylation**
-- [ ] Homocysteine
+**Metilação**
+- [ ] Homocisteína
 
-**Vitamins + minerals**
-- [ ] Vitamin D (25-OH)
-- [ ] Magnesium
-- [ ] Zinc
-- [ ] Copper
-- [ ] Selenium
+**Vitaminas + minerais**
+- [ ] Vitamina D (25-OH)
+- [ ] Magnésio
+- [ ] Zinco
+- [ ] Cobre
+- [ ] Selênio
 
-**Foundation**
-- [ ] Full lipid panel
-- [ ] Complete blood count (CBC)
-- [ ] Comprehensive metabolic panel
+**Base (foundation)**
+- [ ] Painel lipídico completo
+- [ ] Hemograma completo (CBC)
+- [ ] Painel metabólico abrangente
 
-### DNA SNPs
+### SNPs de DNA
 
-**Lipids + cardiovascular**
+**Lipídios + cardiovascular**
 - [ ] APOE
 - [ ] LPA
 - [ ] PCSK9
@@ -223,110 +225,110 @@ The coach is most useful grounded in a comprehensive baseline. This is the full 
 - [ ] AGT
 - [ ] NOS3 (eNOS)
 
-**Methylation / B-vitamins**
+**Metilação / vitaminas do complexo B**
 - [ ] MTHFR
 - [ ] MTHFD1
 - [ ] MTR
 - [ ] MTRR
 - [ ] CBS
 
-**Detox (Phase II)**
+**Detox (Fase II)**
 - [ ] GSTM1
 - [ ] GSTT1
 - [ ] GSTP1
 
-**Caffeine + neurotransmitters**
+**Cafeína + neurotransmissores**
 - [ ] COMT
 - [ ] CYP1A2
 
-**Vitamin D**
+**Vitamina D**
 - [ ] VDR
 - [ ] CYP2R1
 - [ ] GC
 
-**Metabolic / body weight**
+**Metabólico / peso corporal**
 - [ ] FTO
 - [ ] PPARG
 - [ ] TCF7L2
 
-**Inflammation / antioxidant**
+**Inflamação / antioxidante**
 - [ ] TNF
 - [ ] SOD2
 - [ ] GPX1
 
-**Other**
-- [ ] HFE (iron handling)
-- [ ] TAS2R38 (taste / bitter sensitivity)
+**Outros**
+- [ ] HFE (manejo do ferro)
+- [ ] TAS2R38 (paladar / sensibilidade ao amargo)
 
-Each marker or SNP maps to a risk flag, a supplement, or a target in the schema. That is how the coach gives mechanism-aware advice instead of generic tips.
+Cada marcador ou SNP mapeia para uma risk flag, um suplemento ou uma meta no schema. É assim que o coach dá conselhos cientes do mecanismo em vez de dicas genéricas.
 
 ---
 
-## Why it is built this way
+## Por que é construído assim
 
-- **Specific beats generic.** A coach grounded in your real labs, genetics, and goals gives mechanism-aware advice; a generic bot gives platitudes. The whole design forces specificity.
-- **Memory is the product.** Everything is written to structured rows, so the coach knows your whole history and can spot patterns over weeks, not just react to the last message.
-- **Recovery is the spine of the day.** Opening each day with how you actually recovered, then tying it to what you did, teaches you your own levers.
-- **The owner's data always wins.** Any external tip is reconciled against your own numbers.
-- **Locked down by default.** Private project, service-role server-side, secrets in `~/.env`, out of git.
-- **It is not a doctor.** It is a tracking and thinking tool that sends you to real clinicians for anything clinical.
+- **Específico ganha do genérico.** Um coach fundamentado nos seus exames, genética e metas reais dá conselhos cientes do mecanismo; um bot genérico dá platitudes. Todo o design força a especificidade.
+- **A memória é o produto.** Tudo é gravado em linhas estruturadas, então o coach conhece todo o seu histórico e consegue enxergar padrões ao longo de semanas, não só reagir à última mensagem.
+- **A recuperação é a espinha do dia.** Abrir cada dia com como você de fato recuperou, e então ligar isso ao que você fez, te ensina as suas próprias alavancas.
+- **Os dados do dono sempre vencem.** Qualquer dica externa é reconciliada com os seus próprios números.
+- **Trancado por padrão.** Projeto privado, service-role no lado do servidor, segredos em `~/.env`, fora do git.
+- **Não é um médico.** É uma ferramenta de acompanhamento e raciocínio que te encaminha a profissionais de verdade para qualquer coisa clínica.
 
 ---
 
 ## FAQ
 
-**Is this medical advice?** No, see "Important: not medical advice" above. It is a software blueprint; verify everything with your own doctors.
+**Isto é aconselhamento médico?** Não, veja "Importante: não é aconselhamento médico" acima. É um blueprint de software; verifique tudo com os seus próprios médicos.
 
-**Do I need a WHOOP?** No. WHOOP is the worked example, but the same OAuth + daily-sync pattern fits Oura, Garmin, Fitbit, or manual logging. The coach and dashboard work with whatever lands in the `vitals` table.
+**Eu preciso de um WHOOP?** Não. O WHOOP é o exemplo trabalhado, mas o mesmo padrão de OAuth + sync diário serve para Oura, Garmin, Fitbit ou registro manual. O coach e o dashboard funcionam com o que quer que chegue na tabela `vitals`.
 
-**What does it cost to run?** The Supabase free tier handles one person. You pay for the LLM calls, embeddings (pennies), and Gemini vision for photos. WHOOP's API is free with a membership.
+**Quanto custa rodar?** O tier gratuito do Supabase dá conta de uma pessoa. Você paga pelas chamadas ao LLM, embeddings (centavos) e a visão do Gemini para fotos. A API do WHOOP é gratuita com uma assinatura.
 
-**Where does my data live?** Your own private Supabase project, locked down (service-role server-side, RLS on with no policies). Nothing leaves except the LLM calls you choose to make.
+**Onde meus dados ficam?** No seu próprio projeto Supabase privado, trancado (service-role no lado do servidor, RLS ligado sem policies). Nada sai exceto as chamadas ao LLM que você escolher fazer.
 
-**Can it diagnose or change my medication?** No, and it is explicitly instructed not to. It flags clinical concerns toward a doctor and never touches medications.
+**Pode diagnosticar ou mudar minha medicação?** Não, e ele é explicitamente instruído a não fazer isso. Ele sinaliza preocupações clínicas em direção a um médico e nunca toca em medicações.
 
-**How accurate are the food-photo macros?** They are vision estimates, good for trend-tracking, not a substitute for weighing food. The coach says when it is guessing, and you should still run anything that matters past a professional.
-
----
-
-## Important: not medical advice
-
-This repository is a **software blueprint** for building a personal health-tracking assistant. It is **not** medical, nutritional, or fitness advice, and nothing in it is a recommendation for you.
-
-- **It is one person's experience.** Every target, marker, supplement, and habit referenced here is an example of what worked for the author, who worked with qualified doctors at every step. Your physiology, labs, and risks are different.
-- **Consult professionals, always.** Before acting on any value, panel, supplement, or plan, talk to your physician and the relevant specialists, and get your own labs interpreted by your own clinicians, every step of the way.
-- **AI can hallucinate.** The coach is a large language model. It can be confidently wrong, miss context, or invent specifics. Treat every recommendation it produces as a prompt to verify with a doctor, not direction to follow. Run the AI's suggestions past real clinicians, exactly as the author did.
-- **You own your health decisions.** The authors and contributors accept no liability for how you use this.
+**Quão precisos são os macros das fotos de comida?** São estimativas de visão, boas para acompanhar tendências, não um substituto para pesar a comida. O coach avisa quando está chutando, e você ainda deve passar qualquer coisa que importe por um profissional.
 
 ---
 
-## Prerequisites
+## Importante: não é aconselhamento médico
 
-- **Python 3.9+** — the scripts are stdlib-only except `advice.py` (`pip install requests`).
-- **ffmpeg** — only for `exercise_clip.py` (workout demo clips).
-- **Supabase CLI** — to push the migrations.
-- **Node** — to run the agent + the dashboard server.
-- **API keys** (see [`agent/.env.example`](agent/.env.example)): Telegram bot, Supabase, OpenAI (embeddings), Google/Gemini (vision). Optional: WHOOP, Apify (`find-restaurants.sh`), a video API (`exercise_clip.py`).
+Este repositório é um **blueprint de software** para construir um assistente pessoal de acompanhamento de saúde. **Não** é aconselhamento médico, nutricional ou de fitness, e nada nele é uma recomendação para você.
 
-Copy `agent/.env.example` to `~/.env` and fill it in. Never commit your real `~/.env`.
+- **É a experiência de uma pessoa.** Cada meta, marcador, suplemento e hábito referenciado aqui é um exemplo do que funcionou para o autor, que trabalhou com médicos qualificados a cada passo. A sua fisiologia, exames e riscos são diferentes.
+- **Consulte profissionais, sempre.** Antes de agir sobre qualquer valor, painel, suplemento ou plano, converse com o seu médico e os especialistas pertinentes, e tenha os seus próprios exames interpretados pelos seus próprios profissionais, a cada passo do caminho.
+- **A IA pode alucinar.** O coach é um modelo de linguagem grande. Ele pode estar confiantemente errado, perder contexto ou inventar detalhes. Trate cada recomendação que ele produzir como um gatilho para verificar com um médico, não como direção a seguir. Passe as sugestões da IA por profissionais de verdade, exatamente como o autor fez.
+- **As decisões sobre a sua saúde são suas.** Os autores e contribuidores não aceitam nenhuma responsabilidade por como você usa isto.
 
 ---
 
-## Operations
+## Pré-requisitos
 
-**Storage bucket** — one command creates the private photo bucket:
+- **Python 3.9+** — os scripts usam só a stdlib, exceto `advice.py` (`pip install requests`).
+- **ffmpeg** — só para `exercise_clip.py` (clipes de demonstração de treino).
+- **Supabase CLI** — para aplicar as migrations.
+- **Node** — para rodar o agente + o servidor do dashboard.
+- **Chaves de API** (veja [`agent/.env.example`](agent/.env.example)): bot do Telegram, Supabase, OpenAI (embeddings), Google/Gemini (visão). Opcionais: WHOOP, Apify (`find-restaurants.sh`), uma API de vídeo (`exercise_clip.py`).
+
+Copie `agent/.env.example` para `~/.env` e preencha. Nunca commite o seu `~/.env` real.
+
+---
+
+## Operação
+
+**Bucket de storage** — um comando cria o bucket de fotos privado:
 ```bash
 python3 agent/scripts/db.py mkbucket health-assets
 ```
 
-**Scheduling**
-- WHOOP sync is deterministic; schedule `agent/scripts/whoop-sync.py` a few times each morning. Use [`agent/setup/whoop-sync.plist.example`](agent/setup/whoop-sync.plist.example) (macOS launchd) or [`agent/setup/crontab.example`](agent/setup/crontab.example) (Linux). The 7/10/13 schedule catches recovery whenever WHOOP scores the night; repeats are idempotent.
-- The morning check-in triggers the agent (an LLM turn), so fire the `/checkin` prompt each morning via your platform's scheduler (ClaudeClaw has one built in).
+**Agendamento**
+- O sync do WHOOP é determinístico; agende `agent/scripts/whoop-sync.py` algumas vezes pela manhã. Use [`agent/setup/whoop-sync.plist.example`](agent/setup/whoop-sync.plist.example) (launchd do macOS) ou [`agent/setup/crontab.example`](agent/setup/crontab.example) (Linux). O agendamento 7/10/13 pega a recuperação sempre que o WHOOP pontua a noite; repetições são idempotentes.
+- O check-in matinal aciona o agente (um turno do LLM), então dispare o prompt `/checkin` toda manhã pelo scheduler da sua plataforma (o ClaudeClaw tem um embutido).
 
-**The `/healthdb` link** — the command sends a deep-link button to the dashboard, `https://<your-host>/healthdb?token=<DASHBOARD_TOKEN>`. The token is stashed in an HttpOnly cookie on first load, then dropped from the URL (see [`agent/dashboard/routes.example.ts`](agent/dashboard/routes.example.ts)).
+**O link `/healthdb`** — o comando envia um botão de deep-link para o dashboard, `https://<seu-host>/healthdb?token=<DASHBOARD_TOKEN>`. O token é guardado em um cookie HttpOnly no primeiro carregamento, e então removido da URL (veja [`agent/dashboard/routes.example.ts`](agent/dashboard/routes.example.ts)).
 
 ---
 
-## Privacy
+## Privacidade
 
-This is sensitive data. The Supabase project is private and locked down (service-role server-side, no anon policies). Keep your real `CLAUDE.md`, seed values, photos, and `~/.env` out of git. This repo is the scrubbed blueprint, not anyone's records.
+Estes são dados sensíveis. O projeto Supabase é privado e trancado (service-role no lado do servidor, sem policies anon). Mantenha o seu `CLAUDE.md` real, valores de seed, fotos e `~/.env` fora do git. Este repositório é o blueprint higienizado, não os registros de ninguém.
